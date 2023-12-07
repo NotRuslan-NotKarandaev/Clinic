@@ -27,17 +27,18 @@
     <Compile Include="modules\wrappers.py" />
     <Compile Include="modules\models.py" />
     <Compile Include="modules\__init__.py" />
-    <Compile Include="modules\o_array.py" />
-    <Compile Include="modules\o_io.py" />
-    <Compile Include="modules\o_matrix.py" />
-    <Compile Include="modules\o_number.py" />
-    <Compile Include="modules\m_table.py" />
+    <Compile Include="modules\array.py" />
+    <Compile Include="modules\io.py" />
+    <Compile Include="modules\matrix.py" />
+    <Compile Include="modules\number.py" />
+    <Compile Include="modules\table.py" />
     <Compile Include="other.py" />
     <Compile Include="__init__.py" />
     <Compile Include="__main__.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="modules\" />
+    <Folder Include="menus\" />
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|3.10" />

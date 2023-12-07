@@ -188,6 +188,18 @@ class Table:
                start:str=None, end:str=None,
                reverse = None):
         """Converts table to text."""
+        matrix = self.update_cashed(mode,field_index, \
+            regular_expression,start,end,reverse)
+        return o_matrix.get_matrix_as_text(matrix)
+
+
+    def update_cashed(self,mode=Mode.ORIGINAL,
+               field_index=None,
+               regular_expression=None,
+               start:str=None, end:str=None,
+               reverse = None):
+        """Updates cashed matrix with specified
+        parameters. Returns new cashed matrix."""
         if self.original is None:
             matrix = self.get_matrix(
                 True,of_fields=False)
@@ -210,7 +222,7 @@ class Table:
                 matrix = o_matrix.filter_matrix(
                     matrix,field_index,start,end)
         self.cashed = matrix
-        return o_matrix.get_matrix_as_text(matrix)
+        return matrix
 
 
     def get_matrix(self,with_ids = True,
