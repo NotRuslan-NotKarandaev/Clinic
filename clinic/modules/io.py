@@ -193,8 +193,8 @@ def loop(is_main=True,cmds_number=0,
                     result = Wrapper(ex.value_to_return,
                                      ResponseType.BACK)
                     return result
-                #except Exception as ex:
-                #    indent_contr.print_exception(ex)
+                except Exception as ex:
+                    indent_contr.print_exception(ex)
 
         return loop
     return wrap
