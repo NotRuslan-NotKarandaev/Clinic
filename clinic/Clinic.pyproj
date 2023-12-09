@@ -22,22 +22,32 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="menu.py" />
-    <Compile Include="menu_cmds.py" />
+    <Compile Include="menus\account_menu.py" />
+    <Compile Include="menus\admin_menu.py" />
+    <Compile Include="menus\appointments_for_doctor.py" />
+    <Compile Include="menus\appointments_for_patient.py" />
+    <Compile Include="menus\doctor_menu.py" />
+    <Compile Include="menus\main_and_startup.py" />
+    <Compile Include="menus\multi_table_menu.py" />
+    <Compile Include="menus\new_appointment_menu.py" />
+    <Compile Include="menus\one_table_menu.py" />
+    <Compile Include="menus\patient_menu.py" />
+    <Compile Include="menus\__init__.py" />
     <Compile Include="modules\wrappers.py" />
     <Compile Include="modules\models.py" />
     <Compile Include="modules\__init__.py" />
-    <Compile Include="modules\o_array.py" />
-    <Compile Include="modules\o_io.py" />
-    <Compile Include="modules\o_matrix.py" />
-    <Compile Include="modules\o_number.py" />
-    <Compile Include="modules\m_table.py" />
-    <Compile Include="other.py" />
+    <Compile Include="modules\array.py" />
+    <Compile Include="modules\io.py" />
+    <Compile Include="modules\matrix.py" />
+    <Compile Include="modules\number.py" />
+    <Compile Include="modules\table.py" />
+    <Compile Include="common.py" />
     <Compile Include="__init__.py" />
     <Compile Include="__main__.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="modules\" />
+    <Folder Include="menus\" />
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|3.10" />

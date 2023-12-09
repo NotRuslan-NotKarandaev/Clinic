@@ -1,5 +1,5 @@
 """Operations with numbers."""
-from modules import o_array
+from modules import array
 
 
 class NotPositiveException(ValueError):
@@ -21,6 +21,6 @@ def check_if_number_is_in_range(number,start,end,number_name):
     """Checks if the number is in range
     from the start to the end inclusive.
     And if it is not in range throws ValueError."""
-    if not number in o_array.get_range_inclusive(start,end):
+    if not number in array.get_range_inclusive(start,end):
         raise ValueError(f'{number_name} must be in ' + \
         f'range from {start} to {end} inclusive.')

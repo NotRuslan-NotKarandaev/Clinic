@@ -1,7 +1,7 @@
 """Wrappers over fields."""
 import re
 import datetime as dt
-from modules import o_number as n
+from modules import number as n
 
 
 class NotValidFormat(ValueError):

@@ -1,7 +1,7 @@
 """Start of program."""
-from modules import o_io
+from modules import io
 from modules import models as m
-import menu
+from menus import main_and_startup
 
 
 m.create_tables(
@@ -10,5 +10,6 @@ m.create_tables(
     m.Shedule,m.User,
     m.Admin)
 
-indent_contr = o_io.IndentationController()
-menu.main(indent_contr,True)
+indent_contr = io.IndentationController()
+result = main_and_startup.main_menu(indent_contr)
+
