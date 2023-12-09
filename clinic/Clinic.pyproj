@@ -32,6 +32,7 @@
     <Compile Include="menus\new_appointment_menu.py" />
     <Compile Include="menus\one_table_menu.py" />
     <Compile Include="menus\patient_menu.py" />
+    <Compile Include="menus\__init__.py" />
     <Compile Include="modules\wrappers.py" />
     <Compile Include="modules\models.py" />
     <Compile Include="modules\__init__.py" />
