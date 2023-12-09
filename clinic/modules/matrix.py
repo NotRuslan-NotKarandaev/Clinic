@@ -4,16 +4,16 @@ Entry matrix[_i][_j] means addressing
 to the element of matrix with _i row and
 _j column."""
 import re
-from modules import o_array
+from modules import array
 
 
 def get_matrix_with_inner_borders(matrix):
     """Returns matrix with inner separators as elements."""
-    result = [o_array.join_to_array(" | ",row) \
+    result = [array.join_to_array(" | ",row) \
         for row in matrix]
 
     row_separator = get_horizontal_separator(matrix)
-    result = o_array.join_to_array(row_separator,result)
+    result = array.join_to_array(row_separator,result)
     return result
 
 
@@ -27,7 +27,7 @@ def get_assembled_matrix(matrix):
     """Returns the multiline text being
     assembled rows."""
     str_matrix = get_matrix_with_str_elements(matrix)
-    assembled_rows = [o_array.get_assembled_array(row) \
+    assembled_rows = [array.get_assembled_array(row) \
         for row in str_matrix]
     result = '\n'.join(assembled_rows)
     return result
@@ -65,7 +65,7 @@ def get_horizontal_separator(matrix):
     """Returns a divided horizontal separator."""
     row = matrix[0]
     result = [re.sub('.','-',element) for element in row]
-    result = o_array.join_to_array('-+-',result)
+    result = array.join_to_array('-+-',result)
     return result
 
 
@@ -73,7 +73,7 @@ def get_rjusted_matrix(matrix):
     """Returns matrix with right justified
     columns."""
     columns = get_transposed_matrix(matrix)
-    rjusted_columns = [o_array.\
+    rjusted_columns = [array.\
         get_rjusted_column(column) \
         for column in columns]
 
@@ -117,8 +117,8 @@ def search_in_matrix(matrix,column_index,regular_expression):
     matrix_body = matrix[1:]
     column = get_column(column_index,matrix_body)
 
-    indexes = o_array.search_elements(regular_expression,column)
-    result = o_array.get_rearranged_array(indexes,matrix_body)
+    indexes = array.search_elements(regular_expression,column)
+    result = array.get_rearranged_array(indexes,matrix_body)
     result.insert(0,matrix_header)
     return result
 
@@ -136,8 +136,8 @@ def filter_matrix(matrix,column_index,start,end):
     matrix_body = matrix[1:]
     column = get_column(column_index,matrix_body)
 
-    indexes = o_array.filter_elements(start,end,column)
-    result = o_array.get_rearranged_array(indexes,matrix_body)
+    indexes = array.filter_elements(start,end,column)
+    result = array.get_rearranged_array(indexes,matrix_body)
     result.insert(0,matrix_header)
     return result
 

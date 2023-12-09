@@ -1,11 +1,9 @@
-"""Table in this case is list of
-the same type objects where
-fields of any object match elements
-in corresponding columns."""
+"""Wrapper over table of DB."""
 import copy as co
 from enum import Enum
-from modules import o_array
-from modules import o_matrix
+from modules import array
+from modules import matrix
+from modules import models
 from modules import wrappers as w
 
 
@@ -32,7 +30,7 @@ class Mode(Enum):
     """Options for representation
     of table."""
     ORIGINAL = 0
-    CASHED = 1
+    CACHED = 1
     SORT = 2
     SEARCH = 3
     FILTER = 4
@@ -49,7 +47,7 @@ class Table:
         self.fields_names_r = fields_names_r
         self.fields_names_w = fields_names_w
         self.full_access = is_full_access_to_fields
-        self.__cashed = original
+        self.__cached = original
         self.__original = original
 
     @property
@@ -61,7 +59,7 @@ class Table:
     @original.setter
     def original(self,value):
         self.__original = value
-        self.__cashed = value
+        self.__cached = value
 
 
     @property
@@ -77,15 +75,15 @@ class Table:
 
 
     @property
-    def cashed(self):
+    def cached(self):
         """Holds matrix representation of
         sorted, searched, filtered table."""
-        return self.__cashed
+        return self.__cached
 
 
-    @cashed.setter
-    def cashed(self,value):
-        self.__cashed = value
+    @cached.setter
+    def cached(self,value):
+        self.__cached = value
 
 
     def check_full_access(self):
@@ -188,41 +186,41 @@ class Table:
                start:str=None, end:str=None,
                reverse = None):
         """Converts table to text."""
-        matrix = self.update_cashed(mode,field_index, \
+        _matrix = self.update_cached(mode,field_index,
             regular_expression,start,end,reverse)
-        return o_matrix.get_matrix_as_text(matrix)
+        return matrix.get_matrix_as_text(_matrix)
 
 
-    def update_cashed(self,mode=Mode.ORIGINAL,
+    def update_cached(self,mode=Mode.ORIGINAL,
                field_index=None,
                regular_expression=None,
                start:str=None, end:str=None,
                reverse = None):
-        """Updates cashed matrix with specified
-        parameters. Returns new cashed matrix."""
+        """Updates cached matrix with specified
+        parameters. Returns new cached matrix."""
         if self.original is None:
-            matrix = self.get_matrix(
+            _matrix = self.get_matrix(
                 True,of_fields=False)
         else:
-            matrix = self.cashed
+            _matrix = self.cached
         match mode:
             case Mode.ORIGINAL:
-                matrix = self.get_matrix(
+                _matrix = self.get_matrix(
                     True,of_fields=False)
             case Mode.SORT:
-                matrix = o_matrix.get_sorted_matrix(
-                    matrix,field_index,reverse)
+                _matrix = matrix.get_sorted_matrix(
+                    _matrix,field_index,reverse)
             case Mode.SEARCH:
-                matrix = o_matrix.search_in_matrix(
-                    matrix,field_index,regular_expression)
+                _matrix = matrix.search_in_matrix(
+                    _matrix,field_index,regular_expression)
             case Mode.FILTER:
-                col_type = matrix[-1][field_index].__class__
+                col_type = _matrix[-1][field_index].__class__
                 start = col_type(start)
                 end = col_type(end)
-                matrix = o_matrix.filter_matrix(
-                    matrix,field_index,start,end)
-        self.cashed = matrix
-        return matrix
+                _matrix = matrix.filter_matrix(
+                    _matrix,field_index,start,end)
+        self.cached = _matrix
+        return _matrix
 
 
     def get_matrix(self,with_ids = True,
@@ -230,10 +228,10 @@ class Table:
         """Returns matrix that corresponds table
         with or without IDs of entries."""
         if with_ids:
-            matrix = self.get_matrix_with_ids(of_fields)
+            _matrix = self.get_matrix_with_ids(of_fields)
         else:
-            matrix = self.get_matrix_base(of_fields)
-        return matrix
+            _matrix = self.get_matrix_base(of_fields)
+        return _matrix
 
 
     def get_matrix_with_ids(self,of_fields = True,
@@ -242,40 +240,40 @@ class Table:
         with IDs of entries."""
         if not self.original is None:
             return self.original
-        matrix = self.get_matrix_base(of_fields)
-        matrix[0].insert(0,ids_column_name)
-        for row,_id in zip(matrix[1:],self.ids):
+        _matrix = self.get_matrix_base(of_fields)
+        _matrix[0].insert(0,ids_column_name)
+        for row,_id in zip(_matrix[1:],self.ids):
             row.insert(0,w.IntNumber(str(_id)))
 
-        self.original = matrix
+        self.original = _matrix
 
-        return matrix
+        return _matrix
 
 
     def get_matrix_base(self,of_fields = True):
         """Returns matrix that corresponds table."""
         if not self.original is None:
             return self.original
-        matrix = [[] for _id in self.ids]
+        _matrix = [[] for _id in self.ids]
         for _i,_id in enumerate(self.ids):
             for name in self.fields_names_r:
                 if of_fields:
-                    matrix[_i].append(self.get_field(_id,name))
+                    _matrix[_i].append(self.get_field(_id,name))
                 else:
-                    matrix[_i].append(self.get_wrapper(_id,name))
-        names = o_array.get_formatted_words(self.fields_names_r)
-        matrix.insert(0,names)
+                    _matrix[_i].append(self.get_wrapper(_id,name))
+        names = array.get_formatted_words(self.fields_names_r)
+        _matrix.insert(0,names)
 
-        self.original = matrix
+        self.original = _matrix
 
-        return matrix
+        return _matrix
 
 
     def add_fields_names(self,names,mode="r"):
         """Adds only those names which
         there are not in already
         existed names."""
-        self.cashed = None
+        self.cached = None
         for name in names:
             if not name in self.fields_names_r:
                 self.fields_names_r.append(name)
@@ -286,7 +284,7 @@ class Table:
     def del_fields_names(self,names,mode="r"):
         """Removes only those names which
         there are in existed names."""
-        self.cashed = None
+        self.cached = None
         for name in names:
             if name in self.fields_names_r:
                 self.fields_names_r.remove(name)
@@ -296,25 +294,22 @@ class Table:
 
     def join_with(self,*others):
         """Joins tables by their key fields."""
-        connections,m_types = \
-            self.get_all_connections(others)
+        connections,m_types = self.get_all_connections(others)
         tables = [co.deepcopy(other) for other in others]
         tables.insert(0,co.deepcopy(self))
         matrices = get_matrices_with_foreigns_keys(
             connections,m_types,tables)
-        names_matrix = [table.fields_names_r \
-            for table in tables]
+        names_matrix = [table.fields_names_r for table in tables]
 
         new_matrix = join_base_from_start(
             matrices,connections,
             m_types,names_matrix)
 
-        names = o_matrix.to_array(names_matrix)
-        new_matrix.insert(0,o_array.get_formatted_words(names))
+        names = matrix.to_array(names_matrix)
+        new_matrix.insert(0,array.get_formatted_words(names))
 
         new_matrix = get_matrix_with_removed_merged_columns(
-            new_matrix,names_matrix,connections,m_types,
-            names)
+            new_matrix,names_matrix,connections,m_types,names)
 
         result = Table(None,None,names,[],original=new_matrix)
         return result
@@ -324,16 +319,13 @@ class Table:
         """Returns connections betweeen tables
         and model types for each table."""
         m_types = [self.m_type]
-        keys = [m_types[0]. \
-            get_key_fields_names_and_types()]
+        keys = [m_types[0].get_key_fields_names_and_types()]
         connections = []
         for tab in tables:
             tab_m_type = tab.m_type
-            tab_keys = tab_m_type. \
-                get_key_fields_names_and_types()
-            connection = find_connection_fields(
-                    keys,tab_keys,
-                    m_types,tab_m_type)
+            tab_keys = tab_m_type.get_key_fields_names_and_types()
+            connection = find_connection_fields(keys,tab_keys,
+                                                m_types,tab_m_type)
             connections.append(connection)
             m_types.append(tab_m_type)
             keys.append(tab_keys)
@@ -353,9 +345,8 @@ def join_base(connections,types,
         raise ImpossibleToJoinTables
 
     other_names = other_names_matrix[0]
-    entries = try_connect_entry_with( \
-        connection,types,names_matrix, \
-        other_names,entry,matrices[0][1:])
+    entries = try_connect_entry_with(connection,types,
+        names_matrix,other_names,entry,matrices[0][1:])
 
     if entries is None:
         return []
@@ -368,23 +359,20 @@ def join_base(connections,types,
 
     result = []
     for _e in entries:
-        result.extend(join_base( \
-            connections,types,other_types, \
-            names_matrix,other_names_matrix,_e, \
-            matrices[1:]))
+        result.extend(join_base(connections,types,
+            other_types,names_matrix,other_names_matrix,
+            _e,matrices[1:]))
     return result
 
 
 def join_base_from_start(matrices,connections,
                          m_types,names_matrix):
     """The beginning of recursive algoritm that links tables."""
-    matrix = matrices[0]
+    _matrix = matrices[0]
     result = []
-    for entry in matrix[1:]:
-        result.extend(join_base( \
-            connections,[m_types[0]],m_types[1:],
-            [names_matrix[0]],names_matrix[1:],entry,
-            matrices[1:]))
+    for entry in _matrix[1:]:
+        result.extend(join_base(connections,[m_types[0]],m_types[1:],
+            [names_matrix[0]],names_matrix[1:],entry,matrices[1:]))
     return result
 
 
@@ -419,14 +407,14 @@ def try_connect_entry_with(connection,m_types,
 
     first = entry[first_index].number
 
-    column = o_matrix.get_column(
+    column = matrix.get_column(
         second_index,other_matrix)
     indexes = [_i for _i,element in \
         enumerate(column) if element.number == first]
-    matrix = o_array.get_rearranged_array(
+    _matrix = array.get_rearranged_array(
         indexes,other_matrix)
     result = []
-    for row in matrix:
+    for row in _matrix:
         res_row = entry.copy()
         res_row.extend(row)
         result.append(res_row)
@@ -475,7 +463,7 @@ def get_all_connection_indexes(connections,m_types,
     return indexes
 
 
-def get_matrices_with_foreigns_keys( \
+def get_matrices_with_foreigns_keys(
     connections,m_types,tables):
     """Returns matrices with columns of foreign keys that
     used in connections.
@@ -500,16 +488,91 @@ def get_matrices_with_foreigns_keys( \
 
 
 def get_matrix_with_removed_merged_columns(
-    matrix,names_matrix,connections,m_types,
+    _matrix,names_matrix,connections,m_types,
     names):
     """Removes columns which were used for
     connection of tables. Returns new matrix."""
-    columns = o_matrix.get_transposed_matrix(matrix)
+    columns = matrix.get_transposed_matrix(_matrix)
     indexes = get_all_connection_indexes(
         connections,m_types,names_matrix)
     indexes.sort(reverse=True)
     for index in indexes:
         del columns[index]
         del names[index]
-    result = o_matrix.get_transposed_matrix(columns)
+    result = matrix.get_transposed_matrix(columns)
     return result
+
+
+def get_table_by_name(t_name,full_access=True):
+    """Returns one table by its
+    name from this list: Admins,
+    Appointments, Doctors, Patients,
+    Shedules, Users, Vocations."""
+    match t_name:
+        case "Admins":
+            ids = [entry.id for entry in models.Admin.select()]
+            table = Table(
+                ids,
+                models.Admin,
+                ["user"],
+                ["user"],
+                full_access)
+        case "Appointments":
+            ids = [entry.id for entry in models.Appointment.select()]
+            table = Table(
+                ids,
+                models.Appointment,
+                ["date","start","real_date","real_start",
+                "real_end","patient","doctor","was_over"],
+                ["date","start","real_date","real_start",
+                "real_end","patient","doctor","was_over"],
+                full_access)
+        case "Doctors":
+            ids = [entry.id for entry in models.Doctor.select()]
+            table = Table(
+                ids,
+                models.Doctor,
+                ["passport","date_of_birth","full_name",
+                "place_of_residence","user","shedule",
+                "vocation","cabinet","average_appointment_time"],
+                ["passport","date_of_birth",
+                "full_name","place_of_residence","user","shedule",
+                "vocation","cabinet","average_appointment_time"],
+                full_access)
+        case "Patients":
+            ids = [entry.id for entry in models.Patient.select()]
+            table = Table(
+                ids,
+                models.Patient,
+                ["passport","date_of_birth","full_name",
+                "place_of_residence","user"],
+                ["passport","date_of_birth","full_name",
+                "place_of_residence","user"],
+                full_access)
+        case "Shedules":
+            ids = [entry.id for entry in models.Shedule.select()]
+            table = Table(
+                ids,
+                models.Shedule,
+                ["days_in_week","start","lunch_start","lunch_end","end"],
+                ["days_in_week","start","lunch_start","lunch_end","end"],
+                full_access)
+        case "Users":
+            ids = [entry.id for entry in models.User.select()]
+            table = Table(
+                ids,
+                models.User,
+                ["email","password"],
+                ["email","password"],
+                full_access)
+        case "Vocations":
+            ids = [entry.id for entry in models.Vocation.select()]
+            table = Table(
+                ids,
+                models.Vocation,
+                ["name"],
+                ["name"],
+                full_access)
+        case _:
+            raise Exception(f"Table with name {t_name} doesn't exist.")
+    return table

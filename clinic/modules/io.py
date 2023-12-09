@@ -166,10 +166,14 @@ def loop(is_main=True,cmds_number=0,
                 docs(indent_contr)
             while True:
                 try:
-                    code = indent_contr.try_get_command_code(cmds_number)
-                    if code == 1 and (not docs is None):
-                        docs(indent_contr)
-                    result = func(indent_contr,code,**kwargs)
+                    if cmds_number != 0:
+                        code = indent_contr.try_get_command_code(cmds_number)
+                        if code == 1 and (not docs is None):
+                            docs(indent_contr)
+                            continue
+                        result = func(indent_contr,code,**kwargs)
+                    else:
+                        result = func(indent_contr,**kwargs)
                     if not isinstance(result,Wrapper):
                         continue
                     match result.r_type:
@@ -189,8 +193,8 @@ def loop(is_main=True,cmds_number=0,
                     result = Wrapper(ex.value_to_return,
                                      ResponseType.BACK)
                     return result
-                except Exception as ex:
-                    indent_contr.print_exception(ex)
+                #except Exception as ex:
+                #    indent_contr.print_exception(ex)
 
         return loop
     return wrap
