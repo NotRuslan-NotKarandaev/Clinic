@@ -1,6 +1,7 @@
 """Wrapper over table of DB."""
 import copy as co
 from enum import Enum
+from types import NoneType
 from modules import array
 from modules import matrix
 from modules import models
@@ -393,7 +394,7 @@ def find_connection_fields(keys_matrix,
         if key2[1] in types1:
             return key2[::-1]
 
-    return None
+    raise ImpossibleToJoinTables
 
 
 def try_connect_entry_with(connection,m_types,
