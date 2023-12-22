@@ -53,7 +53,7 @@ class TableView(QTableWidget):
         action = menu.exec_(pos)
 
         if action == action1:
-            _id = self.get_entry_id()
+            _id = self.get_entry_id(index)
             self.data.remove_entry(_id)
             self.set_data()
 
