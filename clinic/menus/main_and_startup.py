@@ -65,9 +65,7 @@ def startup_menu(indent_contr,code):
     password = indent_contr. \
         get_input_parameter('Password',str)
 
-    u_ids = [entry.id for entry in models.User.select()]
-    users = table.Table(u_ids,models.User,["email","password"],
-        ["email","password"],True)
+    users = table.get_table_by_name("Users")
 
     match code:
         case 2:
@@ -167,13 +165,7 @@ def get_access_level(user_id,users):
 
 def add_new_patient(indent_contr,users,email,password):
     """Adds new patient. Returns patient id."""
-    p_ids = [entry.id for entry in models.Patient.select()]
-    patients = table.Table(p_ids,models.Patient,[
-        "passport","date_of_birth","full_name",
-        "place_of_residence","user"],
-        ["passport","date_of_birth",
-        "full_name","place_of_residence",
-        "user"],True)
+    patients = table.get_table_by_name("Patients")
     passport = indent_contr. \
         get_input_parameter('Passport (series number)',str)
     date_of_birth = indent_contr. \
@@ -185,7 +177,7 @@ def add_new_patient(indent_contr,users,email,password):
             'Place of residence (country city street '
                 'building apartment)',str)
 
-    user_id = str(users.add_entry(f"{email},{password}"))
+    user_id = users.add_entry(f"{email},{password}")
 
     patient_id = patients.add_entry(
         f"{passport},{date_of_birth},{full_name},"

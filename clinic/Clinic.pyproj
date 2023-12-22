@@ -42,15 +42,50 @@
     <Compile Include="modules\number.py" />
     <Compile Include="modules\table.py" />
     <Compile Include="common.py" />
+    <Compile Include="widgets\table.py" />
+    <Compile Include="widgets\__init__.py" />
+    <Compile Include="windows\base_window.py" />
+    <Compile Include="windows\admin_window.py" />
+    <Compile Include="windows\message_boxes.py" />
+    <Compile Include="windows\add_entry_window.py" />
+    <Compile Include="windows\sign_up_window.py" />
+    <Compile Include="windows\sign_in_window.py" />
+    <Compile Include="windows\main_window.py" />
+    <Compile Include="windows\__init__.py" />
     <Compile Include="__init__.py" />
     <Compile Include="__main__.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="modules\" />
     <Folder Include="menus\" />
+    <Folder Include="widgets\" />
+    <Folder Include="resources\" />
+    <Folder Include="resources\images\" />
+    <Folder Include="resources\help\" />
+    <Folder Include="ui\" />
+    <Folder Include="windows\" />
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|3.10" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="resources\help\add_entry_window.txt" />
+    <Content Include="resources\help\admin_window.txt" />
+    <Content Include="resources\help\sign_up_window.txt" />
+    <Content Include="resources\help\sign_in_window.txt" />
+    <Content Include="resources\help\main_window.txt" />
+    <Content Include="resources\images\add_icon.png" />
+    <Content Include="resources\images\clinic_icon.png" />
+    <Content Include="resources\images\error_icon.png" />
+    <Content Include="resources\images\info_icon.png" />
+    <Content Include="resources\images\o_icon.jpg" />
+    <Content Include="resources\images\warning_icon.png" />
+    <Content Include="ui\help_window.ui" />
+    <Content Include="ui\admin_window.ui" />
+    <Content Include="ui\add_entry_window.ui" />
+    <Content Include="ui\sign_up_window.ui" />
+    <Content Include="ui\sign_in_window.ui" />
+    <Content Include="ui\main_window.ui" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

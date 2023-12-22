@@ -1,0 +1,4 @@
+<p><strong>Add entry window</strong></p>
+<p style="text-align: justify;">In this window you can fill in the fields and create new entry.</p>
+<p style="text-align: justify;">&nbsp;</p>
+<p style="text-align: justify;"><em>To go back to the previous window close this window.</em></p>

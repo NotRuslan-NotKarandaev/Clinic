@@ -1,7 +1,9 @@
 """Start of program."""
+import sys
 from modules import io
 from modules import models as m
-from menus import main_and_startup
+from PyQt5.QtWidgets import QApplication
+from windows.main_window import MainWindow
 
 
 m.create_tables(
@@ -9,7 +11,6 @@ m.create_tables(
     m.Appointment,m.Vocation,
     m.Shedule,m.User,
     m.Admin)
-
-indent_contr = io.IndentationController()
-result = main_and_startup.main_menu(indent_contr)
-
+application = QApplication(sys.argv)
+window = MainWindow()
+sys.exit(application.exec_())

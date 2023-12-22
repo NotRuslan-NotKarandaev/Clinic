@@ -1,0 +1,4 @@
+<p style="text-align: justify;"><strong>Sign in window</strong></p>
+<p style="text-align: justify;">In this window you can sign in to an existing account by passing email and password to corresponding text boxes.</p>
+<p style="text-align: justify;">&nbsp;</p>
+<p style="text-align: justify;"><em>To go back to the previous window close this window.</em></p>

@@ -1,0 +1,10 @@
+<p style="text-align: justify;"><strong>Sign up window</strong></p>
+<p style="text-align: justify;">In this window you can sign up as a new patient by filling in the necessary information.</p>
+<ul>
+<li>Passport: series and number (separated by a whitespace) or just number</li>
+<li>Date of birth: dd.mm.yyyy</li>
+<li>Full name: name, surname and maybe patronimic (separated by whitespaces)</li>
+<li>Place of residence: country name, city name, street name, building number, apartment number (separated by whitespaces)</li>
+</ul>
+<p style="text-align: justify;">&nbsp;</p>
+<p style="text-align: justify;"><em>To go back to the previous window close this window.</em></p>

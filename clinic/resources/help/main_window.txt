@@ -1,0 +1,4 @@
+<p><strong>Sign in and registration window</strong></p>
+<p>In this window you can sign in to an existing account or sign up as a patient.</p>
+<p>&nbsp;</p>
+<p><em>To go back to the previous window close this window.</em></p>

@@ -1,0 +1,8 @@
+<p style="text<p style="text-align: justify;"><strong>Admin window</strong></p>
+<p style="text-align: justify;">In this window you can edit entire clinic database.</p>
+<ul>
+<li>If you want to change table check corresponding box on your left and hit "select" button. After that you are able to <strong>add </strong>new entrie (bottom left button "+"), <strong>remove</strong> entrie (click with RMB on corresponding row header and select remove), <strong>update</strong> value of entrie's element (select some cell, remove an old string, add new one and press enter), <strong>sort</strong> entries by column (click with RMB on corresponding column header and select sort or just click with LMB on it), <strong>filter</strong> entries by column&nbsp;(click with RMB on corresponding column header and select filter), <strong>search</strong> entries by column (click with RMB on corresponding column header and select search).</li>
+<li>If you want to display some information from several tables using inner join then check in the same way several boxes in the necessary order and hit "select" button. You can't modify database in the some way in this mode. There is only <strong>preview</strong> mode.</li>
+<li>If you applied filter, sort or search and want to show the source table then use bottom left button with letter "O" (<strong>original</strong>).</li>
+</ul>
+<p style="text-align: justify;"><em>To go back to the previous window close this window.</em></p>
